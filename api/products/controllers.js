@@ -34,10 +34,12 @@ exports.productDelete = async (req, res) => {
 
 exports.productUpdate = async (req, res) => {
   try {
-    const foundProduct = await Product.findById(productId);
+    const { productId } = req.params;
+    let foundProduct = await Product.findById(productId);
     if (foundProduct) {
-      const foundProduct = await Product.findById(productId);
-      await foundProduct.updateOne(req.body, { new: true });
+      foundProduct = await Product.findByIdAndUpdate(productId, req.body, {
+        new: true,
+      });
       return res.json(foundProduct);
     } else {
       return res.status(404).json({ message: 'Product not found' });
